@@ -29,12 +29,12 @@ public class WeatherService(IWeatherApiClient apiClient)
     public async Task<WeatherData?> GetHottestForecastDayAsync(string city, int days)
     {
         var forecast = await apiClient.GetForecastAsync(city, days);
-        return forecast.MaxBy(w => w.TemperatureCelsius);
+        return forecast.MinBy(w => w.TemperatureCelsius);
     }
 
     public async Task<bool> IsFreezingAsync(string city)
     {
         var data = await apiClient.GetWeatherAsync(city);
-        return data is not null && data.TemperatureCelsius <= 0;
+        return data is not null && data.TemperatureCelsius < 0;
     }
 }
